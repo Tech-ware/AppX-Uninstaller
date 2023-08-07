@@ -1,0 +1,26 @@
+# Get a list of all installed AppX packages
+$packages = Get-AppxPackage
+
+# Display the list of packages with numbers for selection
+for ($i = 0; $i -lt $packages.Count; $i++) {
+    Write-Host "$i) $($packages[$i].Name)"
+}
+
+# Prompt the user to choose a package for uninstallation
+$choice = Read-Host "Enter the number of the package to uninstall"
+
+# Check if the input is valid
+if ($choice -ge 0 -and $choice -lt $packages.Count) {
+    $packageToRemove = $packages[$choice]
+    
+    # Uninstall the chosen package
+    $uninstallResult = $packageToRemove | Remove-AppxPackage
+
+    if ($uninstallResult -eq $true) {
+        Write-Host "Package $($packageToRemove.Name) uninstalled successfully."
+    } else {
+        Write-Host "Failed to uninstall package $($packageToRemove.Name)."
+    }
+} else {
+    Write-Host "Invalid choice."
+}
